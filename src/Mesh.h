@@ -5,7 +5,7 @@
 #ifndef PHONG_MESH_H
 #define PHONG_MESH_H
 
-
+#include <cstdint>
 #include <glad/glad.h>
 
 class Mesh {

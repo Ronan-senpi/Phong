@@ -3,10 +3,10 @@
 //
 
 #include "Mesh.h"
-
+#include <cstdint>
 Mesh::Mesh() {
-	glGenVertexArrays(1, $_vao); //Generate VAO BUFFER
-	glBindVertexArray($_vao); // Bind current vao
+	glGenVertexArrays(1, &_vao); //Generate VAO BUFFER
+	glBindVertexArray(_vao); // Bind current vao
 
 	glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0); //Set parameters 0 format
 	glEnableVertexAttribArray(0); // Start
