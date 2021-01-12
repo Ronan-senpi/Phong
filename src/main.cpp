@@ -1,7 +1,8 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include "glm/glm.hpp"
+#include "glm/gtx/transform.hpp"
 #include "Shader.h"
 
 void processInput(GLFWwindow* window)
@@ -56,6 +57,11 @@ int main() {
         //Rendering
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        myShader.bind();
+		glm::translate(glm::vec3(0.0f,0.0f,0.0f)); //Position in word space;
+        //Use mesh
+
+        //Draw mesh
 
         glfwSwapBuffers(window);
     }

@@ -4,6 +4,7 @@
 
 #include "Mesh.h"
 #include <cstdint>
+
 Mesh::Mesh() {
 	glGenVertexArrays(1, &_vao); //Generate VAO BUFFER
 	glBindVertexArray(_vao); // Bind current vao
@@ -15,7 +16,7 @@ Mesh::Mesh() {
 
 	glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat)); //Set parameters 1 format
 	glEnableVertexAttribArray(1); // Start
-	glVertexAttribBinding(1, 0);// take data form buffer 1
+	glVertexAttribBinding(1, 0);// take data form buffer 0
 
 	glBindVertexArray(0); //Unbind VAO
 
@@ -30,13 +31,21 @@ void Mesh::setVertices(float *vertices, size_t size) {
 	glBufferData(GL_ARRAY_BUFFER, size * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, _vao);
-	glBindVertexBuffer(0, _vbo, 0,8*sizeof(GLfloat));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(_vao);
+	glBindVertexBuffer(0, _vbo, 0, 8 * sizeof(GLfloat));
+	glBindVertexArray(0);
 }
 
 void Mesh::setIndices(uint16_t *indices, size_t size) {
 
+	glCreateBuffers(1, &_ibo);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(uint16_t), indices, GL_STATIC_DRAW);
+
+	glBindVertexArray(_vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
+	glBindVertexArray(0);
 }
 
 

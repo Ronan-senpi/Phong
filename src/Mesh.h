@@ -19,7 +19,7 @@ public:
 private:
 	GLuint _vao; // Vertex array objet (setup attrib shader)
 	GLuint _vbo; // Vertices array object Buffer
-	GLushort _ibo; // Index buffer object (index VBO)
+	GLuint _ibo; // Index buffer object (index VBO)
 };
 
 

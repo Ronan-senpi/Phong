@@ -75,3 +75,11 @@ GLuint Shader::loadShader(const std::string& path, GLenum type) {
 	}
 	return shader;
 }
+
+void Shader::bind() {
+	glUseProgram(_id);
+}
+
+GLuint Shader::getId() const {
+	return _id;
+}

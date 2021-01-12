@@ -9,7 +9,8 @@ add_executable(Phong vendor/glad/src/glad.c src/main.cpp src/Shader.cpp src/Shad
 
 target_include_directories(Phong PRIVATE
         "vendor/glad/include"
-		"vendor/glfw-3.3.2/include")
+		"vendor/glfw-3.3.2/include"
+		"vendor/glm-0.9.9.8")
 
 target_link_directories(Phong PRIVATE
 		"vendor/glfw-3.3.2/lib")
