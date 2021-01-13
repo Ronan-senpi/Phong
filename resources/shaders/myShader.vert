@@ -3,8 +3,8 @@
 layout(location = 0) in vec3 in_vertex;
 layout(location = 1) in vec3 in_normals;
 
-uniform mat4 mvp; // model view projection
-uniform mat4 model; // model to world
+layout(location = 0) uniform mat4 mvp; // model view projection
+layout(location = 1) uniform mat4 model; // model to world
 
 out vec3 fragPos;
 out vec3 normals;

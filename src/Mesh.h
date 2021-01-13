@@ -12,9 +12,10 @@ class Mesh {
 public:
 	Mesh();
 
-	void setVertices(float *vertices, size_t size);
-
-	void setIndices(uint16_t *indices, size_t size);
+	void setVertices(const float *vertices, size_t size);
+	void setIndices(const uint16_t *indices, size_t size);
+	void bind();
+	void unbind();
 
 private:
 	GLuint _vao; // Vertex array objet (setup attrib shader)

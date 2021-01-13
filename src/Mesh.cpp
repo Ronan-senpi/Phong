@@ -23,9 +23,9 @@ Mesh::Mesh() {
 
 }
 
-void Mesh::setVertices(float *vertices, size_t size) {
+void Mesh::setVertices(const float *vertices, size_t size) {
 
-	glCreateBuffers(1, &_vbo);
+	glGenBuffers(1, &_vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferData(GL_ARRAY_BUFFER, size * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
@@ -36,9 +36,9 @@ void Mesh::setVertices(float *vertices, size_t size) {
 	glBindVertexArray(0);
 }
 
-void Mesh::setIndices(uint16_t *indices, size_t size) {
+void Mesh::setIndices(const uint16_t *indices, size_t size) {
 
-	glCreateBuffers(1, &_ibo);
+	glGenBuffers(1, &_ibo);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size * sizeof(uint16_t), indices, GL_STATIC_DRAW);
@@ -46,6 +46,14 @@ void Mesh::setIndices(uint16_t *indices, size_t size) {
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
 	glBindVertexArray(0);
+}
+
+void Mesh::unbind() {
+	glBindVertexArray(0);
+}
+
+void Mesh::bind() {
+	glBindVertexArray(_vao);
 }
 
 

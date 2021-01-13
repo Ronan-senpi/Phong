@@ -17,3 +17,6 @@ target_link_directories(Phong PRIVATE
 
 target_link_libraries(Phong PRIVATE
 		glfw3)
+
+add_custom_command(TARGET Phong PRE_BUILD
+		COMMAND robocopy ${PROJECT_SOURCE_DIR}/resources/ ${PROJECT_BINARY_DIR}/resources /E /NS /NC /NFL /NDL /NP /NJH /NJS  || cmd /c "exit /b 0")
