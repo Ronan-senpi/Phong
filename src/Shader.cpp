@@ -6,26 +6,25 @@
 #include "Helpers/FileHelper.h"
 
 
-Shader::Shader(const std::string& name) {
+Shader::Shader(const std::string &name) {
 	_id = glCreateProgram();
-	GLuint vertex = loadShader(name+".vert", GL_VERTEX_SHADER);
-	GLuint fragments =  loadShader(name+".frag", GL_FRAGMENT_SHADER);
+	GLuint vertex = loadShader(name + ".vert", GL_VERTEX_SHADER);
+	GLuint fragments = loadShader(name + ".frag", GL_FRAGMENT_SHADER);
 
 	glAttachShader(_id, vertex);
 	glAttachShader(_id, fragments);
 	glLinkProgram(_id);
 
-	glDetachShader(_id,vertex);
+	glDetachShader(_id, vertex);
 	glDeleteShader(vertex);
 
-	glDetachShader(_id,fragments);
+	glDetachShader(_id, fragments);
 	glDeleteShader(fragments);
 
 	GLint linkSuccess;
 	glGetProgramiv(_id, GL_LINK_STATUS, &linkSuccess);
 
-	if(linkSuccess == GL_FALSE)
-	{
+	if (linkSuccess == GL_FALSE) {
 		int length;
 		glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &length);
 
@@ -41,20 +40,18 @@ Shader::~Shader() {
 	glDeleteProgram(_id);
 }
 
-GLuint Shader::loadShader(const std::string& path, GLenum type) {
+GLuint Shader::loadShader(const std::string &path, GLenum type) {
 	GLuint shader = glCreateShader(type);
 	std::string source;
 
-	try
-	{
+	try {
 		source = FileHelper::readAllText("resources/shaders/" + path);
 	}
-	catch (const std::ios_base::failure& e)
-	{
+	catch (const std::ios_base::failure &e) {
 		std::cout << "Unable to open shader file \"" << path << "\"" << std::endl;
 		throw e;
 	}
-	const char* source_c = source.c_str();
+	const char *source_c = source.c_str();
 
 	glShaderSource(shader, 1, &source_c, nullptr);
 	glCompileShader(shader);
@@ -62,8 +59,7 @@ GLuint Shader::loadShader(const std::string& path, GLenum type) {
 	GLint compileSuccess;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &compileSuccess);
 
-	if(compileSuccess == GL_FALSE)
-	{
+	if (compileSuccess == GL_FALSE) {
 		int length;
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
@@ -71,7 +67,7 @@ GLuint Shader::loadShader(const std::string& path, GLenum type) {
 		error.resize(length - 1);
 		glGetShaderInfoLog(shader, length, nullptr, error.data());
 
-	throw std::runtime_error("Error while compiling shader: " + error);
+		throw std::runtime_error("Error while compiling shader: " + error);
 	}
 	return shader;
 }

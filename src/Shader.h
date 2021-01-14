@@ -10,13 +10,20 @@
 
 class Shader {
 public:
-	Shader(const std::string& name);
+	Shader(const std::string &name);
+
 	~Shader();
+
 	void bind();
+
 	GLuint getId() const;
+
 private:
+	static GLuint loadShader(const std::string &path, GLenum type);
+
 	GLuint _id;
-	static GLuint loadShader(const std::string& path, GLenum type);
+
+
 };
 
 

@@ -6,6 +6,9 @@
 #include <cstdint>
 
 Mesh::Mesh() {
+
+	_objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
+
 	glGenVertexArrays(1, &_vao); //Generate VAO BUFFER
 	glBindVertexArray(_vao); // Bind current vao
 
