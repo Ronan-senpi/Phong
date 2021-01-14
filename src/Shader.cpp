@@ -71,7 +71,7 @@ GLuint Shader::loadShader(const std::string& path, GLenum type) {
 		error.resize(length - 1);
 		glGetShaderInfoLog(shader, length, nullptr, error.data());
 
-		throw std::runtime_error("Error while compiling shader: " + error);
+	throw std::runtime_error("Error while compiling shader: " + error);
 	}
 	return shader;
 }

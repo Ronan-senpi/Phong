@@ -9,10 +9,28 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Dragon.h"
+#include "Camera.h"
 
-void processInput(GLFWwindow *window) {
+float deltaTime = 0.0f;    // Time between current frame and last frame
+float lastFrame = 0.0f; // Time of last frame
+
+Camera cam;
+
+void processInput(GLFWwindow *window, Camera *cam) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		cam->moveForward(cam->getSpeed() * deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cam->moveBackward(deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cam->moveLeftward(deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cam->moveRightward(deltaTime);
+}
+void mouse_callback(GLFWwindow *window, double xpos, double ypos){
+	cam.mouse_callback(window, xpos, ypos);
 }
 
 //Rezise
@@ -44,7 +62,6 @@ int main() {
 
 	GLFWwindow *window = glfwCreateWindow(800, 600, "cpp-base", nullptr, nullptr);
 
-
 	if (window == nullptr) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -63,6 +80,7 @@ int main() {
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glEnable(GL_DEPTH_TEST);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glDebugMessageCallback(messageCallback, nullptr);
 
 	std::cout << "Driver: " << glGetString(GL_VERSION) << "\n";
@@ -73,12 +91,18 @@ int main() {
 	dragon.setVertices(DragonVertices, sizeof(DragonVertices) / sizeof(float));
 	dragon.setIndices(DragonIndices, sizeof(DragonIndices) / sizeof(uint16_t));
 
+	cam.init();
+
 	while (!glfwWindowShouldClose(window)) {
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 		// Envents
 		glfwPollEvents();
 
 		// Inputs
-		processInput(window);
+		processInput(window, &cam);
+		glfwSetCursorPosCallback(window, mouse_callback);
 
 		//Rendering
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -89,14 +113,11 @@ int main() {
 
 
 		glm::mat4 model = glm::translate(pos)// Position in word space
-		                  * glm::eulerAngleXYZ(0.0f, (float)glfwGetTime() * 2.0f, 0.0f) // Model angle
+		                  * glm::eulerAngleXYZ(0.0f, 2.0f, 0.0f) // Model angle
 		                  * glm::scale(glm::vec3(1.0f, 1.0f, 1.0f)); //scale
 
 		//Update for move cam
-		glm::vec3 camPos(-20.0f, 5.0f, 0.0f);
-		glm::mat4 view = glm::lookAt(camPos,
-		                             glm::vec3(0.0f, 0.0f, 0.0f),
-		                             glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 view = cam.LookAtFront();
 		GLint viewport[4];
 		glGetIntegerv(GL_VIEWPORT, viewport);
 		GLfloat ratio = (float) viewport[2] / (float) viewport[3];
@@ -106,7 +127,7 @@ int main() {
 
 		glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(mvp));
 		glUniformMatrix4fv(1, 1, GL_FALSE, glm::value_ptr(model));
-		glUniform3fv(2, 1, glm::value_ptr(camPos));
+		glUniform3fv(2, 1, glm::value_ptr(cam.getPos()));
 
 		//Use mesh
 		dragon.bind();
