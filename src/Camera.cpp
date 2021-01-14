@@ -18,7 +18,7 @@ void Camera::init() {
 	_camUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	_camPos = glm::vec3(0.0f, 0.0f, 3.0f);
 	_camFront = glm::vec3(0.0f,0.0f,-1.0f);
-	_camSpeed = 2.5f;
+	_camSpeed = 3.5f;
 }
 
 void Camera::moveForward(float speed) {

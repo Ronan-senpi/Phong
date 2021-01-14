@@ -29,7 +29,8 @@ void processInput(GLFWwindow *window, Camera *cam) {
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		cam->moveRightward(deltaTime);
 }
-void mouse_callback(GLFWwindow *window, double xpos, double ypos){
+
+void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
 	cam.mouse_callback(window, xpos, ypos);
 }
 
@@ -131,15 +132,19 @@ int main() {
 		//CamPos
 		glUniform3fv(2, 1, glm::value_ptr(cam.getPos()));
 		//Object color
-		glUniform3fv(3, 1,glm::value_ptr(dragon.getColor()));
+		glUniform3fv(3, 1, glm::value_ptr(dragon.getColor()));
 		//lightColor
-		glUniform3fv(4, 1,glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+		glUniform3fv(4, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
 		//Light pos
-		glUniform3fv(5, 1,glm::value_ptr(glm::vec3(10.0f, 1.0f, 2.0f)));
-		//projection
-		glUniformMatrix4fv(6, 1, GL_FALSE, glm::value_ptr(view));
+		glUniform3fv(5, 1, glm::value_ptr(glm::vec3(10.0f, 5.0f, 10.0f)));
 		//view
+		glUniformMatrix4fv(6, 1, GL_FALSE, glm::value_ptr(view));
+		//projection
 		glUniformMatrix4fv(7, 1, GL_FALSE, glm::value_ptr(projection));
+		//ambientStrength
+		glUniform1f(8, 0.05f);
+		//specularStrength
+		glUniform1f(9, 1.0f);
 		//Use mesh
 		dragon.bind();
 		glDrawElements(GL_TRIANGLES, sizeof(DragonIndices) / sizeof(uint16_t), GL_UNSIGNED_SHORT, nullptr);
